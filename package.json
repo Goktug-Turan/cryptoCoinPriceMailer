@@ -1,0 +1,11 @@
+{
+  "name": "btcpricemailer",
+  "version": "1.0.0",
+  "description": "a project that whatcs coin prices and send them as an email",
+  "main": "sendPriceMail.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "goktug turan",
+  "license": "ISC"
+}
