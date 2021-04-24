@@ -20,8 +20,8 @@ const fetchPriceAndSendEmail = () => {
     gzip: true
   };
   
-  let lowerTarget = 49100.00;
-  let upperTarget = 49900.00;
+  let lowerTarget = 47100.00;
+  let upperTarget = 53100.00;
   rp(requestOptions).then(response => {
     const btcPrice = response.data.BTC.quote.USD.price.toFixed(2)
     if(btcPrice < lowerTarget) {
@@ -36,5 +36,5 @@ const fetchPriceAndSendEmail = () => {
 };
 
 fetchPriceAndSendEmail();
-setInterval(fetchPriceAndSendEmail, 60 * 1000);
+setInterval(fetchPriceAndSendEmail, 5 * 60 * 1000);
 
