@@ -4,7 +4,7 @@
   "description": "a project that whatcs coin prices and send them as an email",
   "main": "sendPriceMail.js",
   "scripts": {
-    "start": "sendPriceMail.js",
+    "start": "node sendPriceMail.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "goktug turan",
