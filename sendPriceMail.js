@@ -2,26 +2,39 @@ require('dotenv').config();
 
 const rp = require('request-promise');
 
-let apiKey = process.env.API_KEY;
-let userEmail = process.env.EMAIL_USER;
-let userEmailPass = process.env.EMAIL_PASS;
-let emailRecipients = process.env.EMAIL_RECIPIENTS;
+let mailFunction = require('./mailFunc.js');
 
-const requestOptions = {
-  method: 'GET',
-  uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest',
-  qs: {
-  },
-  headers: {
-    'X-CMC_PRO_API_KEY': apiKey,
-  },
-  json: true,
-  gzip: true
+let apiKey = process.env.API_KEY;
+
+const fetchPriceAndSendEmail = () => {
+  const requestOptions = {
+    method: 'GET',
+    uri: 'https://pro-api.coinmarketcap.com/v1/cryptocurrency/quotes/latest',
+    qs: {
+      'symbol':'BTC'
+    },
+    headers: {
+      'X-CMC_PRO_API_KEY': apiKey,
+    },
+    json: true,
+    gzip: true
+  };
+  
+  let lowerTarget = 49100.00;
+  let upperTarget = 49900.00;
+  rp(requestOptions).then(response => {
+    const btcPrice = response.data.BTC.quote.USD.price.toFixed(2)
+    if(btcPrice < lowerTarget) {
+      mailFunction.send('BTC', btcPrice, lowerTarget, upperTarget)
+    } if(btcPrice > upperTarget) {
+      mailFunction.send('BTC', btcPrice, lowerTarget, upperTarget)
+    };
+    console.log(btcPrice)
+  }).catch((err) => {
+    console.log('API call error:', err.message);
+  });
 };
 
-rp(requestOptions).then(response => {
-  console.log('API call response:', response);
-}).catch((err) => {
-  console.log('API call error:', err.message);
-});
+fetchPriceAndSendEmail();
+setInterval(fetchPriceAndSendEmail, 60 * 1000);
 
